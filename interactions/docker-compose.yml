@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  app:
+    image: 'anomaly-detector/interactions:1.0-SNAPSHOT'
+    ports:
+      - "8081:8081"
+    build:
+      context: .
+    container_name: anomaly-detector-interactions
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/Anomaly_Detection
+      - SPRING_DATASOURCE_USERNAME=anomaly_detector
+      - SPRING_DATASOURCE_PASSWORD=anomaly_detector
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=anomaly_detector
+      - POSTGRES_PASSWORD=anomaly_detector
